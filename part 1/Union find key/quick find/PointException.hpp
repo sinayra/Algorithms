@@ -1,5 +1,6 @@
 #ifndef POINTEXCEPCTION_HPP
 #define POINTEXCEPCTION_HPP
+#include <string>
 #include <exception>
 
 using namespace std;
