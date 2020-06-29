@@ -10,17 +10,16 @@ using namespace std;
 
 class UF
 {
-    private:
+private:
     vector<int> connections;
     vector<int> amount;
-public:
 
+public:
     UF(int);
     void connect(int, int);
     bool isConnected(int, int);
     void showConnections();
     void showAmounts();
     int getRoot(int);
-
 };
 #endif
