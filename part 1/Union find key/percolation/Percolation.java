@@ -4,42 +4,15 @@
  *  Coursera course:   Algorithms Part 1
  **************************************************************************** */
 
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
 public class Percolation {
 
-    private enum SITE {
-        OPEN,
-        BLOCKED
-    }
 
-    private class Data {
-        private int value;
-        private SITE info;
-
-        Data(int value, SITE info)
-        {
-            this.setValue(value);
-            this.setInfo(info);
-        }
-
-        public int getValue() {
-            return value;
-        }
-
-        public void setValue(int value) {
-            this.value = value;
-        }
-
-        public SITE getInfo() {
-            return info;
-        }
-
-        public void setInfo(SITE info) {
-            this.info = info;
-        }
-    }
-
-    private final Data [][] grid;
-    private final int size;
+    private final boolean [][] grid;
+    private final WeightedQuickUnionUF ufTopDown;
+    private final WeightedQuickUnionUF ufTop;
+    private final int size, virtualTop, virtualBottom;
     private int numOpen;
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n)
@@ -48,100 +21,50 @@ public class Percolation {
         {
             throw new IllegalArgumentException();
         }
-        grid = new Data[n][n];
+        grid = new boolean[n][n];
+        ufTopDown = new WeightedQuickUnionUF(n * n + 2);
+        ufTop = new WeightedQuickUnionUF(n * n + 1);
         size = n;
         numOpen = 0;
+        virtualTop = size * size;
+        virtualBottom = size * size + 1;
 
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
             {
-                grid[i][j] = new Data(i * size + j, SITE.BLOCKED);
+                grid[i][j] = false;
             }
         }
-    }
 
-
-    private int connect(int row, int col, int neighborRow, int neighborCol)
-    {
-        if (neighborRow >= 0 && neighborRow < size && neighborCol >= 0 && neighborCol < size)
-        {
-            if (isOpen(neighborRow + 1, neighborCol + 1))
-            {
-                int lowestValue = Math.min(grid[row][col].getValue(),
-                                           grid[neighborRow][neighborCol].getValue());
-
-                grid[row][col].setValue(lowestValue);
-                grid[neighborRow][neighborCol].setValue(lowestValue);
-
-                return lowestValue;
-            }
-
-        }
-
-        return Integer.MAX_VALUE;
-    }
-
-    private void connectNeighbors(int row, int col)
-    {
-        int[] values = new int[5];
-        int lowest;
-
-        values[0] = connect(row, col, row - 1, col);
-        lowest = values[0];
-
-        values[1] = connect(row, col, row, col - 1);
-        if (values[1] < lowest)
-            lowest = values[1];
-
-        values[2] = connect(row, col, row, col + 1);
-        if (values[2] < lowest)
-            lowest = values[2];
-
-        values[3] = connect(row, col, row + 1, col);
-        if (values[3] < lowest)
-            lowest = values[3];
-
-        values[4] = grid[row][col].getValue();
-        if (values[4] < lowest)
-            lowest = values[4];
-
-        grid[row][col].setValue(lowest);
-        if (row - 1 >= 0 && isOpen(row, col + 1))
-        {
-            grid[row - 1][col].setValue(lowest);
-        }
-
-        if (row + 1 < size && isOpen(row + 2, col + 1))
-        {
-            grid[row + 1][col].setValue(lowest);
-        }
-
-        if (col - 1 >= 0 && isOpen(row + 1, col))
-        {
-            grid[row][col - 1].setValue(lowest);
-        }
-
-        if (col + 1 < size && isOpen(row + 1, col + 2))
-        {
-            grid[row][col + 1].setValue(lowest);
-        }
     }
 
     // opens the site (row, col) if it is not open already
     public void open(int row, int col)
     {
-        if (row > size || col > size || row <= 0 || col <= 0)
+        if (!isValidRowCol(row, col))
         {
             throw new IllegalArgumentException();
         }
 
-        final int i = row - 1;
-        final int j = col - 1;
-
-        if (grid[i][j].getInfo() == SITE.BLOCKED)
+        if (!isOpen(row, col))
         {
-            grid[i][j].setInfo(SITE.OPEN);
+            final int i = row - 1;
+            final int j = col - 1;
+
+            grid[i][j] = true;
+
+            if (i == 0)
+            {
+                int p = size * i + j;
+                ufTopDown.union(p, virtualTop);
+                ufTop.union(p, virtualTop);
+            }
+            if (i == size - 1)
+            {
+                int p = size * i + j;
+                ufTopDown.union(p, virtualBottom);
+            }
 
             connectNeighbors(i, j);
             numOpen++;
@@ -151,7 +74,7 @@ public class Percolation {
     // is the site (row, col) open?
     public boolean isOpen(int row, int col)
     {
-        if (row > size || col > size || row <= 0 || col <= 0)
+        if (!isValidRowCol(row, col))
         {
             throw new IllegalArgumentException();
         }
@@ -159,47 +82,28 @@ public class Percolation {
         final int i = row - 1;
         final int j = col - 1;
 
-        return (grid[i][j].getInfo() != SITE.BLOCKED);
-    }
-
-    private int getRoot(int row, int col)
-    {
-        int value = grid[row][col].getValue();
-
-        int i = value / size;
-        int j = value % size;
-
-        while (value != grid[i][j].getValue())
-        {
-            // update the root of i,j to the root of its root
-            grid[row][col].setValue(value);
-            row = i;
-            col = j;
-
-            value = grid[row][col].getValue();
-            i = value / size;
-            j = value % size;
-        }
-
-        return value;
+        return grid[i][j];
     }
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col)
     {
-        if (row > size || col > size || row <= 0 || col <= 0)
+        if (!isValidRowCol(row, col))
         {
             throw new IllegalArgumentException();
         }
 
-        final int i = row - 1;
-        final int j = col - 1;
-
-        int value = getRoot(i, j);
-
-        if (value < size && grid[i][j].getInfo() == SITE.OPEN)
+        if (isOpen(row, col))
         {
-            return true;
+            final int i = row - 1;
+            final int j = col - 1;
+
+            int p = ufTop.find(size * i + j);
+            int top = ufTop.find(virtualTop);
+
+            if (p == top) {
+                return true;
+            }
         }
         return false;
     }
@@ -213,15 +117,7 @@ public class Percolation {
     // does the system percolate?
     public boolean percolates()
     {
-        for (int i = 0; i < size; i++)
-        {
-            if (isFull(size, i + 1))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return (ufTopDown.find(virtualTop) == ufTopDown.find(virtualBottom));
     }
 
     private void displayGrid()
@@ -230,7 +126,7 @@ public class Percolation {
         {
             for (int j = 0; j < size; j++)
             {
-                System.out.print(grid[i][j].getInfo() + ": " + grid[i][j].getValue() + "\t\t");
+                System.out.print(grid[i][j] + "\t");
             }
             System.out.println();
         }
@@ -240,29 +136,78 @@ public class Percolation {
     // test client (optional)
     public static void main(String[] args)
     {
-        Percolation percolation = new Percolation(5);
+        Percolation percolation = new Percolation(6);
 
         percolation.displayGrid();
 
-        percolation.open(1, 1);
-        percolation.open(1, 2);
-        percolation.open(1, 4);
-        percolation.open(2, 4);
-        percolation.open(3, 2);
+        percolation.open(1, 6);
+        percolation.open(2, 6);
+        percolation.open(3, 6);
+        percolation.open(4, 6);
+        percolation.open(5, 6);
+        percolation.open(5, 5);
+        percolation.open(4, 4);
         percolation.open(3, 4);
-        percolation.open(3, 5);
+        percolation.open(2, 4);
+        percolation.open(2, 3);
+        percolation.open(2, 2);
+        percolation.open(2, 1);
+        percolation.open(3, 1);
         percolation.open(4, 1);
-        percolation.open(4, 3);
         percolation.open(5, 1);
         percolation.open(5, 2);
+        percolation.open(6, 2);
         percolation.open(5, 4);
-        percolation.open(5, 5);
-
-        percolation.open(3, 3);
-        percolation.open(3, 1);
 
         percolation.displayGrid();
 
         System.out.println(percolation.percolates());
+    }
+
+    private void connect(int i1, int j1, int i2, int j2)
+    {
+        int p, q;
+        int pValue = size * i1 + j1;
+        int qValue = size * i2 + j2;
+
+        p = ufTop.find(pValue);
+        q = ufTop.find(qValue);
+
+        ufTopDown.union(p, q);
+        ufTop.union(p, q);
+    }
+
+    private void connectNeighbors(int i, int j)
+    {
+        int neighborI, neighborJ;
+
+        neighborI = i - 1;
+        neighborJ = j;
+        if (isValidRowCol(neighborI + 1, neighborJ + 1) && isOpen(neighborI + 1, neighborJ + 1)) {
+            connect(i, j, neighborI, neighborJ);
+        }
+
+        neighborI = i;
+        neighborJ = j - 1;
+        if (isValidRowCol(neighborI + 1, neighborJ + 1) && isOpen(neighborI + 1, neighborJ + 1)) {
+            connect(i, j, neighborI, neighborJ);
+        }
+
+        neighborI = i;
+        neighborJ = j + 1;
+        if (isValidRowCol(neighborI + 1, neighborJ + 1) && isOpen(neighborI + 1, neighborJ + 1)) {
+            connect(i, j, neighborI, neighborJ);
+        }
+
+        neighborI = i + 1;
+        neighborJ = j;
+        if (isValidRowCol(neighborI + 1, neighborJ + 1) && isOpen(neighborI + 1, neighborJ + 1)) {
+            connect(i, j, neighborI, neighborJ);
+        }
+    }
+
+    private boolean isValidRowCol(int row, int col)
+    {
+        return (row <= size && col <= size && row > 0 && col > 0);
     }
 }
