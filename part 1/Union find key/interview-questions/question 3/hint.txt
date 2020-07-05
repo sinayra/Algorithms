@@ -1,0 +1,1 @@
+Hint: use the modification of the union−find data discussed in the previous question.

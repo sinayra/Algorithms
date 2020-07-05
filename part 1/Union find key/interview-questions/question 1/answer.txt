@@ -1,0 +1,10 @@
+First, allocate an array with n elements, where each index would be a member and its value is the first friend (root) that this member met, and another array with also n elements, but this would count how many friends that person have. Initializes this last array with one, meaning everyone has at least friend, himself.
+The very first time, each member is friend of himself, i.e., the member 0 is friend of 0, member 1 is friend of 1, etc...
+
+1- While the total amount of friends is less than 2*n - 1 (that is it: each member would have at least two friends, he and the root, except the root who is friend of himself), get the next timestamp and connect friend p with friend q with the following rule:
+2- find the root friend from p, called rootP, and from q, called rootQ. The root friend will be that person that is marked as friend of himself;
+3- if rootP and rootQ are equals, go back to step 1;
+4- if the amount of friends from rootP is less than the amount of friends of rootQ, set the value from rootP to rootQ and add the amount of friends from rootQ to rootP friends. Otherwise, set the value from rootQ to rootP and then add the amount of friends from rootP to rootQ friends;
+5- add the total of friends connected from the last value of amount that you added (if you ignored step 3, this value is 0). If this sum is equals or greater than 2*n - 1, retrieve this last timestamp. Otherwise, go back to step 1.
+
+Since this algorithms follows the Weighted Union-Find algorithm, the part to connect friends is log n. The memory space would be just 2*n for both of arrays and, since there would be m timestamps, this algorithm complexity would be O(m log_n)
