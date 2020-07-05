@@ -1,0 +1,15 @@
+version 0:
+For 1 egg and maximum of T tosses, throw the egg from the bottom to top floor, recovering it after each throw. When it breaks, then you have found the T.
+
+version 1:
+For 1lg_n eggs and maximum of 1lg_n tosses, consider the start point of the analysis as the 1st floor and the end point of the analysis at the n-st floor. Throws the eggs at the mid floor between start and end: 
+if it breaks, then throw another egg at the mid floor between the start and previous mid floor;
+if it not breaks, then throw another egg at the mid floot between the previous mid floor and the end;
+Repeats until the start point of analysis don't overlap the end point.
+
+version 2:
+For lg_T eggs and 2lg_T throws, throw the egg at 2^k floor, where k should be increment by 1 if it not breaks. When the first egg breaks at 2^k floor, do the version 1 algorithm between the 2^(k-1) floor and 2^k floor.
+
+version 3:
+
+version 4:
