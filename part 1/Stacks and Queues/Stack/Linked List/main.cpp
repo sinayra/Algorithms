@@ -31,8 +31,12 @@ int main()
             cout << "Error: " << e.what() << endl;
         }
     }
-
-    //stack.displayStack();
+    cout << endl;
+    
+    //this range-based 'for' statement requires a suitable "begin" function and none was found
+    /*for(string s : stack){
+        cout << s << " ";
+    }*/
 
     return 0;
 }

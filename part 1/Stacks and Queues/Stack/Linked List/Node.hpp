@@ -1,20 +1,20 @@
-#ifndef BAG_HPP
-#define BAG_HPP
+#ifndef NODE_HPP
+#define NODE_HPP
 
 #include <iostream>
 #include <vector>
 #include <string>
 #include <iostream>
+#include "StackException.hpp"
 
 using namespace std;
 
 template <typename T>
-class Bag 
+class Node
 {
-   
-    public:
-        void add(T);
-        int size();
+public:
+    T item;
+    Node *next;
 };
 
 #endif

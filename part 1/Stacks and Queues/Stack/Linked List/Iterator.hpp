@@ -1,18 +1,19 @@
-#ifndef ITERABLE_HPP
-#define ITERABLE_HPP
+#ifndef ITERATOR_HPP
+#define ITERATOR_HPP
 
 #include <iostream>
 #include <vector>
 #include <string>
 #include <iostream>
-#include "Iterator.hpp"
 
 using namespace std;
 
 template <typename T>
-class Iterable
+class Iterator
 {
-    virtual Iterator<T> iterator() = 0;
+public:
+    virtual T begin() = 0;
+    virtual T end() = 0;
 };
 
 #endif

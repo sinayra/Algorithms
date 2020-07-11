@@ -5,22 +5,19 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "Node.hpp"
+#include "ListIterator.hpp"
+#include "Iterator.hpp"
 #include "StackException.hpp"
 
 using namespace std;
 
 template <typename T> 
-class Stack
+class Stack 
 {
 private:
-    class Node
-    {
-    public:
-        T item;
-        Node *next;
-    };
-
-    Node *first;
+    Node<T> *first;
+    ListIterator<T> *it;
 
 public:
     Stack();
@@ -29,20 +26,33 @@ public:
     bool isEmpty();
     //void size();
 
+    Iterator<T> iterator();
+
     void displayStack();
 };
+
+template <typename T> 
+Iterator<T> Stack<T>::iterator()
+{
+    if(it == nullptr){
+        it = new ListIterator<T>(first);
+    }
+
+    return it;
+}
 
 template <typename T> 
 Stack<T>::Stack()
 {
     first = nullptr;
+    it = nullptr;
 }
 
 template <typename T> 
 void Stack<T>::push(T value)
 {
-    Node *oldFirst = first;
-    first = new Node();
+    Node<T> *oldFirst = first;
+    first = new Node<T>();
 
     first->item = value;
     first->next = oldFirst;
@@ -57,7 +67,7 @@ T Stack<T>::pop()
     }
     
     T value = first->item;
-    Node *next = first->next;
+    Node<T> *next = first->next;
 
     first->~Node();
 
@@ -75,7 +85,7 @@ bool Stack<T>::isEmpty()
 template <typename T> 
 void Stack<T>::displayStack()
 {
-    Node *node = first;
+    Node<T> *node = first;
 
     while (node != nullptr)
     {
