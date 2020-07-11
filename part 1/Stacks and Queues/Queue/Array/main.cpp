@@ -1,13 +1,13 @@
 #include <iostream>
 #include <string>
-#include "StackOfString.hpp"
-#include "StackException.hpp"
+#include "Queue.hpp"
+#include "QueueException.hpp"
 
 using namespace std;
 int main()
 {
     int N;
-    StackOfString *stack = new StackOfString();
+    Queue<string> *queue = new Queue<string>(10);
 
     cin >> N;
 
@@ -20,19 +20,19 @@ int main()
         {
             if (s.compare("-") == 0)
             {
-               cout << stack->pop() << " ";
+               cout << queue->dequeue() << " ";
             }
             else{
-                stack->push(s);
+                queue->enqueue(s);
             }
         }
-        catch (StackException &e)
+        catch (QueueException &e)
         {
             cout << "Error: " << e.what() << endl;
         }
     }
-
-    //stack.displayStack();
+    cout << endl;
+    queue->displayQueue();
 
     return 0;
 }

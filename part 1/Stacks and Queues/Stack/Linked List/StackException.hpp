@@ -14,4 +14,10 @@ class StackException : public exception
     StackException(string);
     const char * what () const throw ();
 };
+
+StackException::StackException(string msg_) : msg(msg_){}
+
+const char * StackException::what () const throw (){
+    return msg.c_str();
+}
 #endif

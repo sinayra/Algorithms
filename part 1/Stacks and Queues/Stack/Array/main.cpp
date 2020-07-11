@@ -1,13 +1,13 @@
 #include <iostream>
 #include <string>
-#include "StackOfString.hpp"
+#include "Stack.hpp"
 #include "StackException.hpp"
 
 using namespace std;
 int main()
 {
     int N;
-    StackOfString *stack = new StackOfString();
+    Stack<string> *stack = new Stack<string>();
 
     cin >> N;
 
