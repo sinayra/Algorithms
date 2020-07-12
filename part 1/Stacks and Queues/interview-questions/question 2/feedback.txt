@@ -1,0 +1,1 @@
+Hint: Use two stacks, one to store all of the items and a second stack to store the maximums.

@@ -1,0 +1,6 @@
+Arrays contains, at runtime, information of its component type (size, reference, the value itself, etc). So, when creating an array, you must know the type of it to gather these information. An generic does not have these information at runtime, so you can't.
+
+Arrays are not static, but they are dynamically checked.
+
+Arrays are covariant, that means: given an array of type T[], it must contains elements of T type or any subtype of T. At compiler time, Java will check the assign operations if it is the same type of what it expect.
+When using generics, Java will not check the type of assign operations (because this information will not be available). But, since by definition arrays must be checked, generic arrays are not allowed.

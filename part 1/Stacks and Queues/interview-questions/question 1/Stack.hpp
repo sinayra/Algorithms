@@ -65,6 +65,7 @@ T Stack<T>::pop()
         arr.resize(size / 2);
     }
 
+    arr[last - 1] = "\0";
     last--;
 
     return s;
