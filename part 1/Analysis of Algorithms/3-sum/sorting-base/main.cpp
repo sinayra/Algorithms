@@ -42,7 +42,6 @@ int binarySearch(vector<int> arr, int key){
 void insertionSort(vector<int> &arr){
     int size = arr.size();
 
-
     for(int i = 1; i < size; i++){
         int key = arr[i];
 
