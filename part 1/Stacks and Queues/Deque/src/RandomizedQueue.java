@@ -2,6 +2,7 @@ import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
     // construct an empty randomized queue
@@ -40,8 +41,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             resize(2 * arr.length);
         }
 
-        arr[n] = item;
-        n++;
+        arr[n++] = item;
 
     }
 
@@ -59,9 +59,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         arr[n - 1] = arr[index];
         arr[index] = aux;
 
-        Item item = arr[n - 1];
-        arr[n - 1] = null;
-        n--;
+        Item item = arr[--n];
+        arr[n] = null;
 
         if (n > 0 && n == arr.length/4)
         {
@@ -122,15 +121,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
                 throw new NoSuchElementException();
             }
 
-            int index = StdRandom.uniform(size);
+            int index = StdRandom.uniform(n);
 
             Item aux = randomArr[size - 1];
             randomArr[size - 1] = randomArr[index];
             randomArr[index] = aux;
 
-            Item item = randomArr[size - 1];
-            randomArr[size - 1] = null;
-            size--;
+            Item item = randomArr[--size];
+            randomArr[size] = null;
 
             return item;
         }
@@ -139,9 +137,33 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // unit testing (required)
     public static void main(String[] args)
     {
-        RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
-        for (int i = 0; i <= 5; i++) rq.enqueue(i);
-        for (Integer i : rq) System.out.print(i + " ");
+        RandomizedQueue<Integer> test = new RandomizedQueue<>();
+
+        for (int i = 0; i < 100; i++) {
+            test.enqueue(i);
+        }
+        System.out.println(test.size());
+
+        Integer [] num = new Integer[100];
+        for (int i = 0; i < 100; i++) {
+            Integer n = test.dequeue();
+            for (int j = 0; j < i; j++) {
+                if (Objects.equals(num[j], n))
+                {
+                    System.out.println("wrong");
+                }
+            }
+            num[i] = n;
+        }
+        System.out.println(test.size());
+
+        for (int i = 0; i < 1000; i++) {
+            test.enqueue(StdRandom.uniform(1000));
+        }
+        for (int i = 0; i < 1000; i++) {
+            System.out.println(test.dequeue());
+        }
+        System.out.println(test.size());
     }
 
     private void resize(int capacity)
