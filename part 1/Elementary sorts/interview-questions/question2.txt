@@ -1,0 +1,5 @@
+If both arrays has the same size n, then sort both array using Mergesort (NlogN) and then check is both are equals, checking element by element (linear).
+
+
+======= hint
+Hint: sort both arrays.
