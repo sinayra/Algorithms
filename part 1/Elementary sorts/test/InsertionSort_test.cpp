@@ -42,10 +42,19 @@ void test_insertionSortSetStart(){
     assert(isEqual(arr, expected2));
 }
 
+void test_insertionSortStartEnd(){
+    vector<int> arr {5, 3, 9, 1, 10, 2, 6, 4, 8, 7};
+    vector<int> expected {5, 3, 9, 1, 10, 2, 4, 6, 7, 8};
+
+    insertionStartEnd(arr, 5, 9);
+    assert(isEqual(arr, expected));
+}
+
 int main(){
 
     test_insertionSort();
     test_insertionSortSetStart();
+    test_insertionSortStartEnd();
 
     return 0;
 }
