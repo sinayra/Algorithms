@@ -1,0 +1,4 @@
+To check if a range i to j of an array has inversion, sort this range with mergesort (nlogn) and then start the counter with 0. From i + 1 to j, linearly check if a[i - 1] is greater than a[i]. If it is, then increment the counter.
+
+---
+Hint: count while mergesorting.

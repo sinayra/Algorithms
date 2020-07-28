@@ -1,0 +1,13 @@
+Lets call n to mid and 2 * n - 1 to 2 * mid - 1, and 2 * min = n. Copy the first subarray into aux array.
+Given the both subarray with mid elements, the merge operation will do as following:
+1- an index i for the whole array, starting at 0, and an index j to the second subarray, starting in mid, and another index k for aux array, starting at 0
+3- while i < arr.lenght
+4- if aux[k] < arr[j], arr[i] receives arr[k] and increment i and k by 1
+5- if aux[k] > arr[j], arr[i] receives arr[j], and increment i and j
+6- if k > mid, arr receives the rest of the arr between j and 2n - 1
+7- if j > arr.lenght, arr receives the rest of the arr between k and mid
+
+After these steps, arr will be sorted.
+
+--------
+Hint: copy only the left half into the auxiliary array.

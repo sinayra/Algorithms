@@ -1,0 +1,4 @@
+To shuffle a list, use the knuth shuffle algorithm: starting from the second, use a simple rand() from standard library to randomly choose a previous index (rand() % i + 1) to swap position with the current element.
+
+---
+Hint: design a linear-time subroutine that can take two uniformly shuffled linked lists of sizes n1​ and n2​ and combined them into a uniformly shuffled linked lists of size n1+n2​.
