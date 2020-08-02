@@ -3,7 +3,7 @@
 
 The Programming Assignments are in Java due the automatic report, but I'm also re-implementing most of the Java slides in C++. This way I'm reviewing and upgrading my C++ knowledge while studying algorithms.
 
-# Programming Assignment - Correctness
+## Programming Assignment - Correctness
 
 :green_square: Percolation
 
@@ -15,7 +15,7 @@ The Programming Assignments are in Java due the automatic report, but I'm also r
 
 :yellow_square: Kd-Trees
 
-# Reading and Videos
+## Reading and Videos
 :green_square: Week 1
 
 :green_square: Week 2
@@ -28,7 +28,7 @@ The Programming Assignments are in Java due the automatic report, but I'm also r
 
 :white_large_square: Week 6
 
-# To do
+## To do
 
 :white_large_square: Readme for each lesson
 
