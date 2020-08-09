@@ -20,7 +20,7 @@ The Programming Assignments are in Java due the automatic report, but I'm also r
 
 :green_square: Week 2
 
-:yellow_square: Week 3
+:green_square: Week 3
 
 :yellow_square: Week 4
 

@@ -1,0 +1,6 @@
+Shuffle the nut and bolt piles and pick an arbitrary nut and bolt. Every nut whose are bigger than this arbitrary nut must placed at right side of the nut, and the smaller ones must be placed at left side. Do the same thing for the bolt. Check if they fit, and, if they do, then leave them fitted. While there is others bolts and nuts which are not fitted, pick another arbitrary nut from the the left side of the previous chosen nut and repeat the proccess (those whose are smaller must be placed at left side of the arbiraty nut and those whose are bigger at right) and do the same thing for the bolt. Once there is no other bolts and nuts at left side, do the same thing for the right side, starting from the last previous chosen nut and bolt.
+
+------
+Hint: modify the quicksort partitioning part of quicksort.
+
+Remark: This research paper (www.cs.ucla.edu/~rafail/PUBLIC/17.pdf) gives an algorithm that runs in nlog⁡^{4}n time in the worst case.

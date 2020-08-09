@@ -1,0 +1,14 @@
+Given two sorted arrays, A with lenght equals to n1 and indexes 0 to n1-1, and B with lenght equals to n2 and indexes 0 to n2-1.
+
+Version 1 and 2:
+Pick the median point from A and B, call them ma and mb. If ma < mb, them we remove all elements before ma from A and we remove all elements after mb from B. If ma > mb, then remove all elements after ma from A and all elements before mb from B. Repeat this process until we have four elements in total. The median will be max(a1, b1) - min(a2,b2))/2. 
+
+Version 3:
+
+------
+Hint: there are two basic approaches.
+
+    Approach A: Compute the median in a[] and the median in b[]. Recur in a subproblem of roughly half the size.
+    Approach B: Design a constant-time algorithm to determine whether a[i] is a key of rank k. Use this subroutine and binary search.
+
+Dealing with corner cases can be tricky.

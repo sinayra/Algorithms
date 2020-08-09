@@ -1,0 +1,9 @@
+Create a temporary hash map to count each element. For each element of the array, insert the element if not exists in the temp array, setting its counter to 1; if it exists, then increment the counter.
+After iterate all over the array, iterate the map and, if any of its counter is greater than n/10, show it.
+
+This approuch is O(size of A + n)
+
+------
+Hint: determine the (n/10)th largest key using quickselect and check if it occurs more than n/10 times.
+
+Alternate solution hint: use 9 counters.
